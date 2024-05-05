@@ -1,0 +1,66 @@
+def read_sequence(file_path):
+    """
+    Read DNA sequence from a file.
+
+    Args:
+    - file_path: Path to the file containing DNA sequence.
+
+    Returns:
+    - sequence: DNA sequence read from the file.
+    """
+    with open(file_path, 'r') as file:
+        sequence = file.read().strip().upper()  # Remove leading/trailing whitespaces and convert to uppercase
+    return sequence
+
+def calculate_gc_content(sequence):
+    """
+    Calculate GC content of a DNA sequence.
+
+    Args:
+    - sequence: DNA sequence.
+
+    Returns:
+    - gc_content: GC content of the sequence as a percentage.
+    """
+    gc_count = sequence.count('G') + sequence.count('C')
+    total_bases = len(sequence)
+    gc_content = (gc_count / total_bases) * 100
+    return gc_content
+
+def find_motif(sequence, motif):
+    """
+    Find occurrences of a motif in a DNA sequence.
+
+    Args:
+    - sequence: DNA sequence.
+    - motif: Motif to search for.
+
+    Returns:
+    - occurrences: List of positions where the motif occurs in the sequence.
+    """
+    occurrences = []
+    motif_length = len(motif)
+    for i in range(len(sequence) - motif_length + 1):
+        if sequence[i:i + motif_length] == motif:
+            occurrences.append(i)
+    return occurrences
+
+# Main function
+if __name__ == "__main__":
+    file_path = input("Enter the path to the file containing the DNA sequence: ")
+    sequence = read_sequence(file_path)
+
+    print("DNA Sequence:")
+    print(sequence)
+
+    gc_content = calculate_gc_content(sequence)
+    print("\nGC Content: {:.2f}%".format(gc_content))
+
+    motif = input("\nEnter the motif to search for: ")
+    motif_occurrences = find_motif(sequence, motif)
+
+    if motif_occurrences:
+        print("\nMotif '{}' found at position(s):".format(motif))
+        print(motif_occurrences)
+    else:
+        print("\nMotif '{}' not found in the sequence.".format(motif))
